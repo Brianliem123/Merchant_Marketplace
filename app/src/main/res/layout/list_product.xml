@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="5dp"
+    android:layout_marginBottom="5dp">
+
+    <RelativeLayout
+        android:orientation="vertical"
+        android:layout_width="fill_parent"
+        android:layout_height="80dp"
+        android:padding="10dp">
+
+        <ImageView
+            android:id="@+id/image_product"
+            android:layout_width="80dp"
+            android:layout_height="fill_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="6dp"
+            android:contentDescription="TODO"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tv_nama_product"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_alignWithParentIfMissing="true"
+            android:layout_toRightOf="@+id/image_product"
+            android:textColor="@color/black_color"
+            android:textSize="16sp"/>
+
+
+        <TextView
+            android:id="@+id/tv_prc"
+            android:layout_width="fill_parent"
+            android:layout_height="20dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@+id/image_product"
+            android:layout_marginBottom="18sp"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:textColor="@color/black_color"
+            android:text="Price"
+            android:textSize="12sp"/>
+
+        <TextView
+            android:id="@+id/tv_merchant"
+            android:layout_width="fill_parent"
+            android:layout_height="15sp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_toRightOf="@id/image_product"
+            android:ellipsize="marquee"
+            android:singleLine="true"
+            android:textColor="@color/black_color"
+            android:text="Description"
+            android:textSize="12sp"/>
+
+    </RelativeLayout>
+
+</androidx.cardview.widget.CardView>

@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Class.Description">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:id="@+id/image_product"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="20dp"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/tv_des_price"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="text"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="60sp"
+            android:textSize="30sp"/>
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_des_id"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="text"
+        android:layout_marginLeft="30dp"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/tv_des_nama"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="text"
+        android:layout_marginLeft="30dp"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/tv_des_slug"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="text"
+        android:layout_marginLeft="30dp"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/tv_des_qty"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="text"
+        android:layout_marginLeft="30dp"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="Merchant"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        android:padding="5dp"/>
+
+    <TextView
+        android:id="@+id/tv_des_mid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="text"
+        android:layout_marginLeft="30dp"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/tv_des_mname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="text"
+        android:layout_marginLeft="30dp"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/tv_des_mslug"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="text"
+        android:layout_marginLeft="30dp"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textAlignment="center"
+        android:text="Kategori"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_marginTop="20dp"
+        android:padding="5dp"/>
+
+    <TextView
+        android:id="@+id/tv_des_cid"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="text"
+        android:layout_marginLeft="30dp"
+        android:textSize="20sp"/>
+
+    <TextView
+        android:id="@+id/tv_des_cname"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="text"
+        android:layout_marginLeft="30dp"
+        android:textSize="20sp"/>
+
+
+</LinearLayout>

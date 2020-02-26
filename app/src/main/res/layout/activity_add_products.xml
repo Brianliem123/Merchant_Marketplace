@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".Class.AddProducts">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:textSize="15sp"
+            android:text="NAME "
+            android:textStyle="bold"/>
+        <EditText
+            android:id="@+id/product_name"
+            android:hint="Product Name"
+            style="@style/AddProduct"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:textSize="15sp"
+            android:text="QUANTITY "
+            android:textStyle="bold"/>
+        <EditText
+            android:id="@+id/qty_products"
+            android:hint="Qty"
+            style="@style/AddProduct"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:textSize="15sp"
+            android:text="CATEGORY ID "
+            android:textStyle="bold"/>
+        <EditText
+            android:id="@+id/cat_id"
+            android:hint="Catergory ID"
+            style="@style/AddProduct"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:layout_margin="10dp">
+        <TextView
+            android:layout_width="120dp"
+            android:layout_height="30dp"
+            android:textSize="15sp"
+            android:text="PRICE "
+            android:textStyle="bold"/>
+        <EditText
+            android:id="@+id/price_id"
+            android:hint="Price"
+            style="@style/AddProduct"
+            />
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_add_product"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="kirim"
+        android:textColor="@color/white_color"
+        android:background="@color/black_color"
+        android:layout_marginTop="50dp"
+        android:layout_marginLeft="150dp"
+        android:layout_marginRight="150dp"/>
+
+
+</LinearLayout>
