@@ -3,14 +3,25 @@ package com.fa.marketplace_merchant.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Product implements Parcelable {
     private int productId;
     private int productQty,productPrice;
-    private String productName, productSlug;
+    private String productName, productSlug ,productDesc;
+    @SerializedName("productImage")
     private String productImg;
 
     private Merchant merchant;
     private Category category;
+
+    public String getProductDesc() {
+        return productDesc;
+    }
+
+    public Product(String productDesc) {
+        this.productDesc = productDesc;
+    }
 
     public int getProductPrice() {
         return productPrice;
@@ -70,6 +81,7 @@ public class Product implements Parcelable {
         dest.writeInt(this.productPrice);
         dest.writeString(this.productName);
         dest.writeString(this.productSlug);
+        dest.writeString(this.productDesc);
         dest.writeString(this.productImg);
         dest.writeParcelable(this.merchant, flags);
         dest.writeParcelable(this.category, flags);
@@ -81,6 +93,7 @@ public class Product implements Parcelable {
         this.productPrice = in.readInt();
         this.productName = in.readString();
         this.productSlug = in.readString();
+        this.productDesc = in.readString();
         this.productImg = in.readString();
         this.merchant = in.readParcelable(Merchant.class.getClassLoader());
         this.category = in.readParcelable(Category.class.getClassLoader());

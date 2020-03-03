@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Class.EditProduct"
+    android:orientation="vertical">
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="20dp">
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:padding="10dp"
+                    android:text="Product Image"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+                <ImageView
+                    android:id="@+id/image_form_file_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    />
+                <Button
+                    android:id="@+id/btn_choose_image_edit"
+                    android:layout_width="300dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="Choose Image"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/white_color"
+                    android:background="@drawable/shape_choose_img"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="30dp"
+                    android:textSize="15sp"
+                    android:text="NAME "
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/product_name_edit"
+                    android:hint="Product Name"
+                    style="@style/AddProduct"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="30dp"
+                    android:textSize="15sp"
+                    android:text="QUANTITY "
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/qty_products_edit"
+                    android:hint="Qty"
+                    style="@style/AddProduct"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_margin="10dp">
+                <TextView
+                    android:layout_width="120dp"
+                    android:layout_height="30dp"
+                    android:textSize="15sp"
+                    android:text="PRICE "
+                    android:textStyle="bold"/>
+                <EditText
+                    android:id="@+id/price_id_edit"
+                    android:hint="Price"
+                    style="@style/AddProduct"
+                    />
+            </LinearLayout>
+
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginBottom="5dp"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="left"
+                    android:text="Product Description"
+                    android:layout_marginTop="30dp"
+                    android:padding="10dp"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
+                <EditText
+                    android:id="@+id/input_item_desc_edit"
+                    android:inputType="textMultiLine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="10dp"
+                    android:hint="Description"
+                    android:allowUndo="true"
+                    android:maxLines="10"/>
+
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_margin="10dp">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="left"
+                    android:textSize="15sp"
+                    android:text="CATEGORY : "
+                    android:textStyle="bold"/>
+
+                <androidx.appcompat.widget.AppCompatSpinner
+                    android:id="@+id/category_dropdown_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"/>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <Button
+                android:id="@+id/btn_add_product_edit"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="EDIT"
+                android:textColor="@color/white_color"
+                android:background="@drawable/shape_choose_img"
+                android:layout_marginTop="20dp"
+                />
+
+
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+    </ScrollView>
+
+</LinearLayout>

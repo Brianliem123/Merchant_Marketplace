@@ -1,10 +1,12 @@
 package com.fa.marketplace_merchant.Class;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.bumptech.glide.Glide;
 import com.fa.marketplace_merchant.Model.Product;
@@ -12,9 +14,10 @@ import com.fa.marketplace_merchant.R;
 import com.google.gson.Gson;
 
 public class Description extends AppCompatActivity {
-    private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9,tv10;
+    private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9,tv10,tv11;
     private ImageView img;
 
+    Product product;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,7 +27,7 @@ public class Description extends AppCompatActivity {
         Bundle bundle = getIntent().getExtras();
         String json = bundle.getString("data");
 
-        Product product = new Gson().fromJson(json, Product.class);
+        product = new Gson().fromJson(json, Product.class);
 
         //Product product = getIntent().getParcelableExtra("data");
         inisialisasi();
@@ -44,7 +47,8 @@ public class Description extends AppCompatActivity {
         tv7.setText("Slug Merchant  :  " + product.getMerchant().getMerchantSlug());
         tv8.setText("ID Kategori    :  " + String.valueOf(product.getCategory().getCategoryId()));
         tv9.setText("Nama Kategori  :  " + product.getCategory().getCategoryName());
-        tv10.setText("Harga Product :  " + String.valueOf(product.getProductPrice()));
+        tv10.setText("RP .  " + String.valueOf(product.getProductPrice()));
+        tv11.setText(product.getProductDesc());
 
     }
 
@@ -60,5 +64,12 @@ public class Description extends AppCompatActivity {
         tv8 = findViewById(R.id.tv_des_cid);
         tv9 = findViewById(R.id.tv_des_cname);
         tv10 = findViewById(R.id.tv_des_price);
+        tv11 = findViewById(R.id.tv_deskripsi);
+    }
+
+    public void Pindah(View view) {
+        Intent intent = new Intent(Description.this,EditProduct.class);
+        intent.putExtra("slug",product.getProductSlug());
+        startActivity(intent);
     }
 }

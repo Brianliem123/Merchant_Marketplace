@@ -1,92 +1,300 @@
 package com.fa.marketplace_merchant.Class;
 
-import androidx.appcompat.app.AppCompatActivity;
-
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.util.Base64;
+import android.util.Log;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.Toast;
 
+import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.android.volley.AuthFailureError;
+import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
+import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.bumptech.glide.Glide;
+import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
+import com.fa.marketplace_merchant.Adapter.CategoriesAdapter;
+import com.fa.marketplace_merchant.Model.Category;
 import com.fa.marketplace_merchant.R;
+import com.google.gson.Gson;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Hashtable;
 import java.util.Map;
 
-public class AddProducts extends AppCompatActivity {
-    private EditText nameP, qtyP, idC, prC;
-    private Button btnAdd;
+public class AddProducts extends AppCompatActivity implements AdapterView.OnItemSelectedListener {
+    RequestQueue requestQueue;
+    Spinner categoryDropDown;
+    ArrayList<Category> categories;
+    CategoriesAdapter categoriesAdapter;
+    ImageView imageView;
 
-    private RequestQueue requestQueue;
+    private EditText nameP, qtyP, prC, desc;
+    private Button btnAdd , btnChoose;
+
+    private int PICK_IMAGE_REQUEST = 1;
+    private String productImage = null;
+    private String productName, productDesc,productQty, productPrice, categoryId, merchantId;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_products);
 
+        requestQueue = Volley.newRequestQueue(getApplicationContext());
+
+        getAllCategories();
         inisial();
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                productName = nameP.getText().toString();
+                productDesc = desc.getText().toString();
+                productPrice = prC.getText().toString();
+                productQty = qtyP.getText().toString();
+
+                merchantId = "1"; //Sementara set ke 1
+
+                if(productImage == null) {
+                    productImage = null;
+                }
+
                 VolleyLoad();
+
+            }
+        });
+
+        btnChoose.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showFileChooser();
             }
         });
 
     }
 
     public void inisial() {
+        //Button
         btnAdd = findViewById(R.id.btn_add_product);
+        btnChoose = findViewById(R.id.btn_choose_image);
+
+        //Edit Text
         nameP = findViewById(R.id.product_name);
         qtyP = findViewById(R.id.qty_products);
-        idC = findViewById(R.id.cat_id);
         prC = findViewById(R.id.price_id);
+        desc = findViewById(R.id.input_item_desc);
+
+        // ImageView for hold choosed image from intent
+        imageView = findViewById(R.id.image_form_file);
+
+        //Spinner Categoriesa
+        categoryDropDown = findViewById(R.id.category_dropdown);
+        // Array list for hold categories from server
+        categories = new ArrayList<>();
+        // set categories adapter to Spinner
+        categoriesAdapter = new CategoriesAdapter();
+        categoryDropDown.setAdapter(categoriesAdapter);
+        categoryDropDown.setOnItemSelectedListener(this);
+        // get all categories from server
+
     }
 
-        public void VolleyLoad(){
+        public void VolleyLoad() {
 
             String url = "http://210.210.154.65:4444/api/products";
+            final StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+                @Override
+                public void onResponse(String response) {
+                    Log.d("response", response);
+                    try {
+                        JSONObject jsonObject = new JSONObject(response);
+                        int code = jsonObject.getInt("code");
+                        if (code == 200) {
+                            Toast.makeText(getApplicationContext(), jsonObject.getString("message"), Toast.LENGTH_LONG).show();
+                        } else {
+                            ProductErrorRespone errorRespone = new Gson().fromJson(jsonObject.getString("message"), ProductErrorRespone.class);
+                            if (errorRespone.getProductNameError().size() != 0) {
+                                if (errorRespone.getProductNameError().get(0) != null) {
+                                    nameP.setError(errorRespone.getProductNameError().get(0));
+                                    Toast.makeText(getApplicationContext(), errorRespone.getProductNameError().get(0), Toast.LENGTH_LONG).show();
+                                }
+                            }
 
-            final String merchant = "1";
+                            if (errorRespone.getProductQtyError().size() != 0) {
+                                if (errorRespone.getProductQtyError().get(0) != null) {
+                                    qtyP.setError(errorRespone.getProductQtyError().get(0));
+                                    Toast.makeText(getApplicationContext(), errorRespone.getProductQtyError().get(0), Toast.LENGTH_SHORT).show();
+                                }
+                            }
 
-            final Map<String, String> data = new Hashtable<String, String>();
-            data.put("productName", nameP.getText().toString());
-            data.put("productQty", qtyP.getText().toString());
-            data.put("categoryId", idC.getText().toString());
-            data.put("productPrice", prC.getText().toString());
-            data.put("merchantId", merchant);
-           // data.put("productImage",null);
-
-            requestQueue = Volley.newRequestQueue(this);
-
-            StringRequest addProductReq = new StringRequest(Request.Method.POST, url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Toast.makeText(AddProducts.this, "Data Telah Ditambahkan", Toast.LENGTH_SHORT).show();
+                            if (errorRespone.getProductPriceError().size() != 0) {
+                                if (errorRespone.getProductPriceError().get(0) != null) {
+                                    prC.setError(errorRespone.getProductPriceError().get(0));
+                                    Toast.makeText(getApplicationContext(), errorRespone.getProductPriceError().get(0), Toast.LENGTH_SHORT).show();
+                                }
+                            }
                         }
-                    },
-                    new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Toast.makeText(AddProducts.this, "Data Gagal ditambahkan", Toast.LENGTH_SHORT).show();
-                        }
-                    }) {
+                        Log.i("response", response);
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    error.printStackTrace();
+                    if (error.networkResponse.statusCode == 400) {
+                        Toast.makeText(getApplicationContext(), String.valueOf(error.networkResponse), Toast.LENGTH_LONG).show();
+                    }
+                }
+            }) {
                 @Override
                 protected Map<String, String> getParams() throws AuthFailureError {
-                    Map<String, String> param = new Hashtable<String, String>();
-                    param = data;
-                    return param;
+                    Map<String, String> params = new Hashtable<String, String>();
+
+                    params.put("productName", productName);
+                    params.put("productQty", productQty);
+                    params.put("productDesc", productDesc);
+                    params.put("productPrice", productPrice);
+                    if(productImage != null) {
+                        params.put("productImage", productImage);
+                    }
+                    params.put("categoryId", categoryId);
+                    params.put("merchantId", merchantId);
+
+
+                    return params;
                 }
             };
+            {
+                 // requestQueue = Volley.newRequestQueue(this);
 
-            requestQueue.add(addProductReq);
+                int socketTimeout = 30000;
+                RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                stringRequest.setRetryPolicy(policy);
+                RequestQueue requestQueue = Volley.newRequestQueue(this);
+                requestQueue.add(stringRequest);
+            }
+
+            requestQueue.add(stringRequest);
+        }
+
+        private void showFileChooser() {
+        Intent pickImageIntent = new Intent(Intent.ACTION_PICK,
+                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        pickImageIntent.setType("image/*");
+        pickImageIntent.putExtra("aspectX", 1);
+        pickImageIntent.putExtra("aspectY", 1);
+        pickImageIntent.putExtra("scale", true);
+        pickImageIntent.putExtra("outputFormat", Bitmap.CompressFormat.JPEG.toString());
+        startActivityForResult(pickImageIntent, PICK_IMAGE_REQUEST);
+    }
+
+    private void getAllCategories(){
+        String url = "http://210.210.154.65:4444/api/categories";
+
+        JsonObjectRequest listCatReq = new JsonObjectRequest(Request.Method.GET, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        // handle response
+                        try {
+                            JSONArray data = response.getJSONArray("data");
+                            for(int i=0;i<data.length();i++){
+                                Gson gson = new Gson();
+                                Category category = gson.fromJson(data.getJSONObject(i).toString(),Category.class);
+                                categories.add(category);
+                            }
+
+                            categoriesAdapter.addData(categories);
+                            categoriesAdapter.notifyDataSetChanged();
+                            Toast.makeText(getApplicationContext(),String.valueOf(categoriesAdapter.getCount()),Toast.LENGTH_LONG).show();
+
+                        }
+                        catch (JSONException e){
+                            e.printStackTrace();
+                        }
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        error.printStackTrace();
+                    }
+                });
+
+
+        requestQueue.add(listCatReq);
+    }
+
+
+    @Override
+    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+        this.categoryId = String.valueOf(categoriesAdapter.getItemId(position));
+
+    }
+
+    @Override
+    public void onNothingSelected(AdapterView<?> parent) {
+
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == PICK_IMAGE_REQUEST && resultCode == RESULT_OK && data != null && data.getData() != null) {
+            Uri filePath = data.getData();
+            try {
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), filePath);
+                //encoding image to string
+                productImage = getStringImage(bitmap); // call getStringImage() method below this code
+                Log.d("image",productImage);
+
+                Glide.with(getApplicationContext())
+                        .load(bitmap)
+                        .override(imageView.getWidth())
+                        .transition(DrawableTransitionOptions.withCrossFade())
+                        .into(imageView);
+
+                System.out.println("image : "+productImage);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
+
+    private String getStringImage(Bitmap bmp) {
+        ByteArrayOutputStream baos = new ByteArrayOutputStream(); //bikin baos
+        bmp.compress(Bitmap.CompressFormat.JPEG, 70, baos); // bitmap to baos
+        byte[] imageBytes = baos.toByteArray(); // baos to bytearray
+        String encodedImage = Base64.encodeToString(imageBytes, Base64.DEFAULT); //bytearray to base64 string
+        return encodedImage;
+    }
+}
