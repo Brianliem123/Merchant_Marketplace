@@ -18,52 +18,141 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="24sp"
-            android:textColor="#fff"
+            android:textColor="@color/black_color"
             android:fontFamily="sans-serif"
             android:text="REGISTER"
-            android:background="@drawable/shape_choose_img"
-            android:padding="5dp"/>
+            android:padding="5dp"
+            android:layout_marginBottom="20dp"/>
 
-        <EditText
-            android:id="@+id/etNama"
-            android:layout_marginTop="8dp"
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/et_firstName"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="First Name"
+                android:textColorHint="@color/colorPrimaryDark"
+                android:padding="8dp"
+                android:inputType="textPersonName"
+                android:textColor="@color/colorPrimaryDark"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/et_lastName"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Last Name"
+                android:textColorHint="@color/colorPrimaryDark"
+                android:padding="8dp"
+                android:inputType="textPersonName"
+                android:textColor="@color/colorPrimaryDark"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/et_Email"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Email"
+                android:textColorHint="@color/colorPrimaryDark"
+                android:padding="8dp"
+                android:inputType="textEmailAddress"
+                android:textColor="@color/black_color"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
+
+       <com.google.android.material.textfield.TextInputLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           app:passwordToggleEnabled="true">
+
+           <EditText
+               android:id="@+id/et_Password"
+               android:layout_marginTop="8dp"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:hint="Password"
+               android:textColorHint="@color/colorPrimaryDark"
+               android:inputType="textPassword"
+               android:padding="8dp"
+               android:textColor="@color/black_color"/>
+
+       </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Nama"
-            android:textColorHint="@color/colorPrimaryDark"
-            android:padding="8dp"
-            android:inputType="textPersonName"
-            android:textColor="@color/colorPrimaryDark"/>
+            app:passwordToggleEnabled="true">
 
-        <EditText
-            android:id="@+id/etEmail"
-            android:layout_marginTop="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email"
-            android:textColorHint="@color/colorPrimaryDark"
-            android:padding="8dp"
-            android:inputType="textEmailAddress"
-            android:textColor="#80FFFFFF"/>
+            <EditText
+                android:id="@+id/et_confirmPassword"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Confirm Password"
+                android:textColorHint="@color/colorPrimaryDark"
+                android:inputType="textPassword"
+                android:padding="8dp"
+                android:textColor="@color/black_color"/>
 
-        <EditText
-            android:id="@+id/etPassword"
-            android:layout_marginTop="8dp"
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Password"
-            android:textColorHint="@color/colorPrimaryDark"
-            android:inputType="textPassword"
-            android:padding="8dp"
-            android:textColor="#80FFFFFF"/>
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/et_merchantName"
+                android:layout_marginTop="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Merchant Name"
+                android:textColorHint="@color/colorPrimaryDark"
+                android:padding="8dp"
+                android:textColor="@color/black_color"/>
+
+        </com.google.android.material.textfield.TextInputLayout>
 
         <Button
-            android:id="@+id/btnRegister"
+            android:id="@+id/click_register"
             android:layout_marginTop="40dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textColor="#FFF"
             android:text="REGISTER"
+            android:background="@drawable/shape_choose_img" />
+
+        <TextView
+            android:layout_marginTop="8dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/black_color"
+            android:fontFamily="cursive"
+            android:text="OR"
+            android:textStyle="bold"
+            android:layout_gravity="center"/>
+
+        <Button
+            android:id="@+id/btn_login_InReg"
+            android:layout_marginTop="8dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="#FFF"
+            android:text="LOGIN"
             android:background="@drawable/shape_choose_img" />
     </LinearLayout>
 </RelativeLayout>

@@ -18,33 +18,45 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:textSize="24sp"
-            android:textColor="#fff"
+            android:textColor="@color/black_color"
             android:fontFamily="sans-serif"
             android:text="LOGIN"
-            android:background="@drawable/shape_choose_img"
-            android:padding="10dp"/>
+            android:padding="10dp"
+            android:layout_marginBottom="20dp"/>
 
-        <EditText
-            android:id="@+id/etEmail"
-            android:layout_marginTop="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Email"
-            android:textColorHint="@color/colorPrimaryDark"
-            android:padding="8dp"
-            android:inputType="textEmailAddress"
-            android:textColor="#80FFFFFF"/>
+       <com.google.android.material.textfield.TextInputLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content">
 
-        <EditText
-            android:id="@+id/etPassword"
-            android:layout_marginTop="8dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Password"
-            android:textColorHint="@color/colorPrimaryDark"
-            android:inputType="textPassword"
-            android:padding="8dp"
-            android:textColor="#80FFFFFF"/>
+           <EditText
+               android:id="@+id/etEmail"
+               android:layout_marginTop="8dp"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:hint="Email"
+               android:textColorHint="@color/colorPrimaryDark"
+               android:padding="8dp"
+               android:inputType="textEmailAddress"
+               android:textColor="@color/black_color"/>
+
+       </com.google.android.material.textfield.TextInputLayout>
+
+       <com.google.android.material.textfield.TextInputLayout
+           android:layout_width="match_parent"
+           android:layout_height="wrap_content"
+           app:passwordToggleEnabled="true">
+           <EditText
+               android:id="@+id/etPassword"
+               android:layout_marginTop="8dp"
+               android:layout_width="match_parent"
+               android:layout_height="wrap_content"
+               android:hint="Password"
+               android:textColorHint="@color/colorPrimaryDark"
+               android:inputType="textPassword"
+               android:padding="8dp"
+               android:textColor="@color/black_color" />
+
+       </com.google.android.material.textfield.TextInputLayout>
 
         <Button
             android:id="@+id/btnLogin"
@@ -59,9 +71,10 @@
             android:layout_marginTop="8dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="#FFF"
+            android:textColor="@color/black_color"
             android:fontFamily="cursive"
             android:text="OR"
+            android:textStyle="bold"
             android:layout_gravity="center"/>
 
         <Button
