@@ -1,9 +1,11 @@
 package com.fa.marketplace_merchant.Class;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
-import android.view.View;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -47,6 +49,8 @@ public class RegisterActivity extends AppCompatActivity {
     RequestQueue requestQueue;
     AccessToken accessTokem;
 
+    ConnectivityManager conMgr;
+
 
     final String FIRST_NAME = "first_name";
     final String LAST_NAME = "last_name";
@@ -77,9 +81,16 @@ public class RegisterActivity extends AppCompatActivity {
 
     @OnClick(R.id.click_register)
     public void register() {
-
-        if (isValidInput() == true) {
-            postDataRegister();
+        conMgr = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        {
+            if (conMgr.getActiveNetworkInfo() != null && conMgr.getActiveNetworkInfo().isAvailable() && conMgr.getActiveNetworkInfo().isConnected()){
+                if (isValidInput() == true) {
+                    postDataRegister();
+                }
+            }
+            else {
+                Toast.makeText(getApplicationContext(),"No Internet Connection",Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -120,11 +131,6 @@ public class RegisterActivity extends AppCompatActivity {
             isValid = false;
         }
 
-        if (editTextMerchantName.getText().toString().isEmpty()) {
-            editTextMerchantName.setError("Merchant Name cannot be empty");
-            isValid = false;
-        }
-
         return isValid;
     }
 
@@ -146,6 +152,7 @@ public class RegisterActivity extends AppCompatActivity {
                         accessTokem = new Gson().fromJson(response, AccessToken.class);
 
                         TokenManager.getInstance(getSharedPreferences("pref", MODE_PRIVATE)).saveToken(accessTokem);
+                        Toast.makeText(getApplicationContext(), "Berhasil di daftarkan", Toast.LENGTH_LONG).show();
                     }
                 },
                 new Response.ErrorListener() {
@@ -201,7 +208,4 @@ public class RegisterActivity extends AppCompatActivity {
         requestQueue.add(registerReq);
     }
 
-
-    public void pindah(View view) {
-    }
 }

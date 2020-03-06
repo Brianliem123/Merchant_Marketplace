@@ -253,7 +253,6 @@ public class AddProducts extends AppCompatActivity implements AdapterView.OnItem
         requestQueue.add(listCatReq);
     }
 
-
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
         this.categoryId = String.valueOf(categoriesAdapter.getItemId(position));

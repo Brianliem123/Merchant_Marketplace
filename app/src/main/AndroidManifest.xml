@@ -13,8 +13,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
-        <activity android:name=".Class.RegisterActivity"></activity>
-        <activity android:name=".Class.LoginActivity" >
+        <activity android:name=".Class.ProfileActivity">
+
+        </activity>
+        <activity android:name=".Class.RegisterActivity" />
+        <activity android:name=".Class.LoginActivity">
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -29,8 +32,7 @@
         <activity
             android:name=".MainActivity"
             android:label="@string/app_name"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
     </application>
 
 </manifest>

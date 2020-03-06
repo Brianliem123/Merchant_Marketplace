@@ -37,12 +37,11 @@ public class TokenManager {
 
     }
 
-    public AccessToken getToken(){
-        AccessToken accessToken = new AccessToken();
-        accessToken.setTokenType(sharedPreferences.getString("TOKEN_TYPE",null));
-        accessToken.setAccessToken(sharedPreferences.getString("ACCESS_TOKEN",null));
-        accessToken.setRefreshToken(sharedPreferences.getString("REFRESH_TOKEN",null));
-        return accessToken;
+    public AccessToken getToken(AccessToken accessTokem){
+        accessTokem.setTokenType(sharedPreferences.getString("TOKEN_TYPE",null));
+        accessTokem.setAccessToken(sharedPreferences.getString("ACCESS_TOKEN",null));
+        accessTokem.setRefreshToken(sharedPreferences.getString("REFRESH_TOKEN",null));
+        return accessTokem;
     }
 
 }
