@@ -1,5 +1,6 @@
 package com.fa.marketplace_merchant;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
@@ -12,15 +13,20 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
+import com.android.volley.toolbox.StringRequest;
 import com.fa.marketplace_merchant.Adapter.CustomAdapter;
 import com.fa.marketplace_merchant.Class.AddProducts;
+import com.fa.marketplace_merchant.Class.LoginActivity;
+import com.fa.marketplace_merchant.Class.ProfileActivity;
+import com.fa.marketplace_merchant.Model.AccessToken;
 import com.fa.marketplace_merchant.Model.Product;
+import com.fa.marketplace_merchant.Utils.TokenManager;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.gson.Gson;
 
@@ -29,12 +35,15 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Hashtable;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity {
     RequestQueue requestQueue;
     RecyclerView recyclerView;
     CustomAdapter customAdapter = new CustomAdapter(this);
 
+    public static Activity fa;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +52,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        fa = this;
+
+        String token = TokenManager.getInstance(getSharedPreferences("pref",MODE_PRIVATE)).getToken().getAccessToken();
+        if(token == null){
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+        }
         inisialKomponen();
         volleyEffect();
 
@@ -55,6 +71,34 @@ public class MainActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String token = TokenManager.getInstance(getSharedPreferences("pref",MODE_PRIVATE)).getToken().getAccessToken();
+        if(token == null){
+            startActivity(new Intent(MainActivity.this, LoginActivity.class));
+            finish();
+        }
+        volleyEffect();
+    }
+
+    private void verifyToken(){
+        StringRequest verReq = new StringRequest(Request.Method.GET, "http://210.210.154.65:4444/api/auth/verify",
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+                    }
+                }
+                );
     }
 
     @Override
@@ -81,9 +125,11 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void volleyEffect(){
-        requestQueue = Volley.newRequestQueue(getApplicationContext());
+        //requestQueue = Volley.newRequestQueue(getApplicationContext());
 
-        String url = "http://210.210.154.65:4444/api/products";
+        AccessToken accessToken = TokenManager.getInstance(getSharedPreferences("pref", MODE_PRIVATE)).getToken();
+
+        String url = "http://210.210.154.65:4444/api/merchant/products";
 
         JsonObjectRequest listProductReq = new JsonObjectRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONObject>() {
@@ -114,9 +160,19 @@ public class MainActivity extends AppCompatActivity {
                         error.printStackTrace();
 
                     }
-                });
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new Hashtable<>();
+                headers.put("Accept", "application/json");
+                headers.put("Authorization", accessToken.getTokenType() +" "+ accessToken.getAccessToken());
+                return headers
+                        ;
+            }
+        };
 
-        requestQueue.add(listProductReq);
+        VolleyApp.getInstance().addToRequestQueue(listProductReq,"list_product_req");
+        //requestQueue.add(listProductReq);
     }
     public void inisialKomponen(){
         recyclerView = findViewById(R.id.rv_main);
@@ -131,5 +187,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     public void Pindah(MenuItem item) {
+        Intent intent = new Intent(MainActivity.this, ProfileActivity.class);
+        startActivity(intent);
     }
 }

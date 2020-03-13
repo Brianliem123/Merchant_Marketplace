@@ -115,7 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                         // do whatever u want with response
                         accessTokem = new Gson().fromJson(response, AccessToken.class);
 
-                        TokenManager.getInstance(getSharedPreferences("pref", MODE_PRIVATE)).getToken(accessTokem);
+                        TokenManager.getInstance(getSharedPreferences("pref", MODE_PRIVATE)).saveToken(accessTokem);
                         //jika login berhasil
                         Toast.makeText(getApplicationContext(), "LOGIN SUKSES",
                                 Toast.LENGTH_SHORT).show();

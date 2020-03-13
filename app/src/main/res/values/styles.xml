@@ -23,4 +23,12 @@
         <item name="android:layout_height">40dp</item>
     </style>
 
+    <style name="parent.headerText">
+        <item name="android:textColor">@color/white_color</item>
+        <item name="android:textSize">@dimen/headerTextSize</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="parent">parent</style>
+
 </resources>

@@ -31,8 +31,12 @@ import com.android.volley.toolbox.Volley;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.fa.marketplace_merchant.Adapter.CategoriesAdapter;
+import com.fa.marketplace_merchant.MainActivity;
+import com.fa.marketplace_merchant.Model.AccessToken;
 import com.fa.marketplace_merchant.Model.Category;
 import com.fa.marketplace_merchant.R;
+import com.fa.marketplace_merchant.Utils.TokenManager;
+import com.fa.marketplace_merchant.VolleyApp;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -52,7 +56,7 @@ public class AddProducts extends AppCompatActivity implements AdapterView.OnItem
     CategoriesAdapter categoriesAdapter;
     ImageView imageView;
 
-    private EditText nameP, qtyP, prC, desc;
+    EditText nameP, qtyP, prC, desc;
     private Button btnAdd , btnChoose;
 
     private int PICK_IMAGE_REQUEST = 1;
@@ -77,10 +81,13 @@ public class AddProducts extends AppCompatActivity implements AdapterView.OnItem
                 productPrice = prC.getText().toString();
                 productQty = qtyP.getText().toString();
 
-                merchantId = "1"; //Sementara set ke 1
 
                 if(productImage == null) {
                     productImage = null;
+                    MainActivity.fa.finish();
+                    Intent intent = new Intent(AddProducts.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
 
                 VolleyLoad();
@@ -124,9 +131,10 @@ public class AddProducts extends AppCompatActivity implements AdapterView.OnItem
     }
 
         public void VolleyLoad() {
-
-            String url = "http://210.210.154.65:4444/api/products";
-            final StringRequest stringRequest = new StringRequest(Request.Method.POST, url, new Response.Listener<String>() {
+            AccessToken accessToken = TokenManager.getInstance(getSharedPreferences("pref", MODE_PRIVATE)).getToken();
+            String url = "http://210.210.154.65:4444/api/merchant/products";
+            final StringRequest addProductReq = new StringRequest(Request.Method.POST, url,
+                    new Response.Listener<String>() {
                 @Override
                 public void onResponse(String response) {
                     Log.d("response", response);
@@ -185,10 +193,17 @@ public class AddProducts extends AppCompatActivity implements AdapterView.OnItem
                         params.put("productImage", productImage);
                     }
                     params.put("categoryId", categoryId);
-                    params.put("merchantId", merchantId);
+                    //params.put("merchantId", merchantId);
 
 
                     return params;
+                }
+                @Override
+                public Map<String, String> getHeaders() throws AuthFailureError {
+                    Map<String, String> headers = new Hashtable<>();
+                    headers.put("Accept", "application/json");
+                    headers.put("Authorization", accessToken.getTokenType() +" "+ accessToken.getAccessToken());
+                    return headers;
                 }
             };
             {
@@ -196,12 +211,12 @@ public class AddProducts extends AppCompatActivity implements AdapterView.OnItem
 
                 int socketTimeout = 30000;
                 RetryPolicy policy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-                stringRequest.setRetryPolicy(policy);
-                RequestQueue requestQueue = Volley.newRequestQueue(this);
-                requestQueue.add(stringRequest);
+                addProductReq.setRetryPolicy(policy);
+  //              RequestQueue requestQueue = Volley.newRequestQueue(this);
+//                requestQueue.add(addProductReq);
             }
-
-            requestQueue.add(stringRequest);
+            //requestQueue.add(addProductReq);
+            VolleyApp.getInstance().addToRequestQueue(addProductReq, "add_product_req");
         }
 
         private void showFileChooser() {

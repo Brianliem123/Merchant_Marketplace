@@ -5,16 +5,33 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.android.volley.AuthFailureError;
+import com.android.volley.Request;
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.bumptech.glide.Glide;
+import com.fa.marketplace_merchant.Model.AccessToken;
 import com.fa.marketplace_merchant.Model.Product;
 import com.fa.marketplace_merchant.R;
+import com.fa.marketplace_merchant.Utils.TokenManager;
+import com.fa.marketplace_merchant.VolleyApp;
 import com.google.gson.Gson;
 
+import org.json.JSONObject;
+
+import java.util.Hashtable;
+import java.util.Map;
+
+import butterknife.ButterKnife;
+import butterknife.OnClick;
+
 public class Description extends AppCompatActivity {
-    private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9,tv10,tv11;
+    private TextView tv1, tv2, tv3, tv4, tv5, tv6, tv7, tv8, tv9, tv10, tv11;
     private ImageView img;
 
     Product product;
@@ -23,7 +40,7 @@ public class Description extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_description);
-
+        ButterKnife.bind(this);
         Bundle bundle = getIntent().getExtras();
         String json = bundle.getString("data");
 
@@ -66,10 +83,46 @@ public class Description extends AppCompatActivity {
         tv10 = findViewById(R.id.tv_des_price);
         tv11 = findViewById(R.id.tv_deskripsi);
     }
+    @OnClick(R.id.delete_btn)
+    public  void delete(){
+        deleteProduct();
+    }
+
 
     public void Pindah(View view) {
-        Intent intent = new Intent(Description.this,EditProduct.class);
-        intent.putExtra("slug",product.getProductSlug());
+        Intent intent = new Intent(Description.this, EditProduct.class);
+        intent.putExtra("slug", product.getProductSlug());
         startActivity(intent);
+    }
+    public void deleteProduct(){
+        AccessToken accessToken = TokenManager.getInstance(getSharedPreferences("pref",MODE_PRIVATE)).getToken();
+        String accessTok = accessToken.getAccessToken();
+        String bearer = accessToken.getTokenType();
+        String url = "http://210.210.154.65:4444/api/merchant/product/"+ product.getProductId()+"/delete";
+        Toast.makeText(this, url, Toast.LENGTH_SHORT).show();
+
+        JsonObjectRequest req = new JsonObjectRequest(Request.Method.DELETE, url, null,
+                new Response.Listener<JSONObject>() {
+                    @Override
+                    public void onResponse(JSONObject response) {
+                        finish();
+                        Toast.makeText(Description.this, "PRODUVT TELAH DI HAPUS", Toast.LENGTH_SHORT).show();
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Toast.makeText(Description.this, "PRODUCT GAGAL DI HAPUS", Toast.LENGTH_SHORT).show();
+                    }
+                }){
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> headers = new Hashtable<>();
+                headers.put("Accept", "application/json");
+                headers.put("Authorization", bearer + " " + accessTok);
+                return headers;
+            }
+        };
+        VolleyApp.getInstance().addToRequestQueue(req, "delete_product");
     }
 }

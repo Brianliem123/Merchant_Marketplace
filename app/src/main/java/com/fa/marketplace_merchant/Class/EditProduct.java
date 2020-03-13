@@ -32,9 +32,11 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.fa.marketplace_merchant.Adapter.CategoriesAdapter;
 import com.fa.marketplace_merchant.MainActivity;
+import com.fa.marketplace_merchant.Model.AccessToken;
 import com.fa.marketplace_merchant.Model.Category;
 import com.fa.marketplace_merchant.Model.Product;
 import com.fa.marketplace_merchant.R;
+import com.fa.marketplace_merchant.Utils.TokenManager;
 import com.google.gson.Gson;
 
 import org.json.JSONArray;
@@ -98,7 +100,7 @@ public class EditProduct extends AppCompatActivity implements AdapterView.OnItem
                 productPrice = validasiEdt(priceP);
                 productQty = validasiEdt(qtyP);
 
-                merchantId = "1";
+                //merchantId = "1";
 
                 if (productImage == null) {
                     productImage = null;
@@ -146,7 +148,8 @@ public class EditProduct extends AppCompatActivity implements AdapterView.OnItem
     }
 
     public  void  volleyLoad(){
-        String url = "http://210.210.154.65:4444/api/product/"+product.getProductId()+"/update";
+        AccessToken accessToken = TokenManager.getInstance(getSharedPreferences("pref", MODE_PRIVATE)).getToken();
+        String url = "http://210.210.154.65:4444/api/merchant/product/"+product.getProductId()+"/update";
 
 
         StringRequest addProductReq =  new StringRequest(Request.Method.PUT, url,
@@ -182,7 +185,7 @@ public class EditProduct extends AppCompatActivity implements AdapterView.OnItem
                 }
 
                 params.put("categoryId", categoryId);
-                params.put("merchantId", merchantId);
+                //params.put("merchantId", merchantId);
                 return params;
             }
 
@@ -190,6 +193,7 @@ public class EditProduct extends AppCompatActivity implements AdapterView.OnItem
             public Map<String, String> getHeaders() throws AuthFailureError {
                 Map<String,String> params = new Hashtable<>();
                 params.put("Content-type","application/x-www-form-urlencoded");
+                params.put("Authorization", accessToken.getTokenType() +" "+ accessToken.getAccessToken());
                 return params;
             }
         };
@@ -198,6 +202,7 @@ public class EditProduct extends AppCompatActivity implements AdapterView.OnItem
         RetryPolicy retryPolicy = new DefaultRetryPolicy(socketTimeout, DefaultRetryPolicy.DEFAULT_MAX_RETRIES, DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         addProductReq.setRetryPolicy(retryPolicy);
         requestQueue.add(addProductReq);
+        //VolleyApp.getInstance().addToRequestQueue(addProductReq, "edt_product_req");
 
     }
     private void getDataSebelumnya() {
